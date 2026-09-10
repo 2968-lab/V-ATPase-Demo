@@ -1,0 +1,25 @@
+# Virtual environment
+.venv/
+venv/
+
+# Python cache
+__pycache__/
+
+# VS Code settings
+.vscode/
+
+# Environment variables / secrets
+.env
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Frames output folder
+Frames/
+
+# Any movies I may have generated here
+*.mp4
+
+# Preloaded pymol files
+*.cif
