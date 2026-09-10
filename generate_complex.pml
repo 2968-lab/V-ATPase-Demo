@@ -1,6 +1,6 @@
-# This pymol script serves to generate the 6WM2, human V-ATPase, and prepare it for the simulation
+# This pymol script serves to generate the 6WM2, human V-ATPase, complex and prepare it for the simulation
 
-# first, load the human V-ATPase and wait until it is finished loading
+# First, load the human V-ATPase and wait until it is finished loading
 fetch 6WM2, async = 0
 
 # Apply the b factor putty preset on the complex

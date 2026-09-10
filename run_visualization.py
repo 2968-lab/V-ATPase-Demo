@@ -1,9 +1,8 @@
-# This script runs the simulation that creates the proton conveyorbelt
+# This script runs the visualization by rotating the complex and creating and running the proton conveyorbelt
 
 import importlib
 import proton_conveyorbelt_class
 from pymol import cmd
-from config import run_time
 
 # Reload the proton_conveyorbelt file to allow for editing
 importlib.reload(proton_conveyorbelt_class)
@@ -11,9 +10,9 @@ importlib.reload(proton_conveyorbelt_class)
 def take_image(frame_number,frame_folder):
     # Defines function that takes an image, inputting the frame number and file folder
     cmd.ray # Activate ray tracing
-    cmd.png(str(frame_folder / f'frame_{frame_number}.png'))
+    cmd.png(str(frame_folder / f'frame_{frame_number}.png')) # Take the image
 
-def run_simulation(directory):
+def run_visualization(directory,run_time):
     # Script to run the simulation given the main working directory
     # Runs at 30 fps
 
@@ -30,12 +29,13 @@ def run_simulation(directory):
         # Run once for each frame
 
         if counter > 24: # 25 frames after the last rotation
-        # Slowly rotate the image over 5 frames
+            # Slowly rotate the complex over 5 frames
             rotation = True # Set rotation equal to true
             cmd.rotate('y',7.2,'rotating_subunits') # Rotate the rotating subunits by 36 degrees across 5 frames (7.2 degrees per frame)
             conveyorbelt.update_conveyorbelt(rotation) # Update proton positions, indicating that roation occurs
             take_image(frame+1,frame_folder) # Take an image
         else:
+            # Outside of rotating frames
             rotation = False # Set rotation to False
             conveyorbelt.update_conveyorbelt(rotation) # Update proton positions, indicating that rotation does not occur
             take_image(frame+1,frame_folder) # take an image

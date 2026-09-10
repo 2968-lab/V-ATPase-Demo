@@ -10,11 +10,11 @@ class Proton_conveyorbelt:
     # Class to manage the conveyorbelt of protons
 
     def __init__(self):
-        # Generate a first proton
+        # Generate the first proton
         new_proton = self.Proton(1)
         self.proton_list = [new_proton] # Define the list of protons and add the first one to the list
         self.number_of_protons = 1 # Record the number of protons (1 right now)
-        self.last_proton = new_proton # Record the first proton as the last proton in the list
+        self.last_proton = new_proton # Record the last proton as the first proton (for now)
 
     def add_proton(self):
         # Method to add a new proton
@@ -29,7 +29,7 @@ class Proton_conveyorbelt:
 
         for proton in self.proton_list:
             # Loop through each loaded proton
-            proton.update_proton_position(rotating_frame) # Update the proton's position, passing along whether there is a rotating frame
+            proton.update_proton_position(rotating_frame) # Update the proton's position, passing along whether the current frame is a rotating frame
             if proton.coordinates[1] <= -100:
                 # If the current proton is below -100 in the y
                 cmd.delete(proton.name) # Delete the proton object from pymol
@@ -43,13 +43,13 @@ class Proton_conveyorbelt:
         # Class to generate instances for specific protons
 
         proton_spawn_displacement = [0,-75,0] # Displacement needed to get a proton to the origin from its spawn position
-        proton_relative_spawn_coordinates = [-145,60,0] # Coordinates of the proton's starting position relative to the center of the c subunits (origin)
+        proton_relative_spawn_coordinates = [-145,60,0] # Coordinates of the proton's starting position relative to the center of the rotor c subunits (origin)
 
         def __init__(self,number):
             # Generate a new proton, inputting what number proton it is
-            self.name = f'proton_{number}' # Generate a named string, incorportaing the proton's number
+            self.name = f'proton_{number}' # Generate a name string, incorportaing the proton's number
             cmd.pseudoatom(self.name, elem='H') # Add a pseudoatom, representing a proton
-            cmd.show('spheres', self.name) # Display the pseudoatom ('proton')
+            cmd.show('spheres', self.name) # Display the proton
 
             # Alter the proton's size and color
             cmd.set('sphere_scale',5,self.name) # Set the size
@@ -57,7 +57,7 @@ class Proton_conveyorbelt:
 
             # Adjust the proton's position
             cmd.translate(self.proton_spawn_displacement,self.name,camera=1) # Translate from spawn to the origin
-            cmd.translate(self.proton_relative_spawn_coordinates,self.name,camera=1) # Translate from the origin to the proton's starting position
+            cmd.translate(self.proton_relative_spawn_coordinates,self.name,camera=1) # Translate from the origin to the proton's starting position in the conveyorbelt
 
             # Define the coordinates
             self.coordinates = self.proton_relative_spawn_coordinates.copy()
@@ -98,7 +98,7 @@ class Proton_conveyorbelt:
                         self.coordinates = [new_x,new_y,new_z] # Save the new coordinates
 
                         if self.angle <= -324:
-                            # If the proton has rotated -312 degrees
+                            # If the proton has rotated -324 degrees
                             self.movement = 'second down' # Transition to going down again
                     else:
                         return
@@ -108,7 +108,7 @@ class Proton_conveyorbelt:
                     self.coordinates[1] -= 1 # Decrease its y coordinate
 
         def calculate_rotating_coordinates(self):
-            # Method designed to calculate the cartesian coordinates a proton needs to go to based on its current angle
+            # Method designed to calculate the new coordinates of a proton based on its current angle
             new_x = self.radius * math.cos(math.radians(self.angle)) # Calculate the new x position, first converting the angle to radians
-            new_z = self.radius * math.sin(math.radians(self.angle)) # Same as before, but for the z coordinate
+            new_z = self.radius * math.sin(math.radians(self.angle)) # Same as above, but for the z coordinate
             return [new_x, 0, new_z] # Return the new coordinates
